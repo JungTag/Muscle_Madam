@@ -4,6 +4,7 @@ from typing import List
 
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.responses import FileResponse
+from starlette.middleware.cors import CORSMiddleware
 import uvicorn
 
 from database.conn import engine
@@ -16,6 +17,16 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 IMG_DIR = os.path.join(BASE_DIR, 'static', 'images')
 
 app = FastAPI(title="muscle_madam")
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:8080", "http://127.0.0.1:8080"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # 라우터 정의
 app.include_router(menu.router, tags=["Menus"])
